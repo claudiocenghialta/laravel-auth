@@ -43,7 +43,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="">Post</a>
+                            <a class="nav-link btn btn-success text-white" href="{{route('posts.index')}} ">Posts</a>
                         </li>
                         <!-- Authentication Links -->
                         @guest

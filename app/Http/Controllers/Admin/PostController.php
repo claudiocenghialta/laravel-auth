@@ -54,9 +54,11 @@ class PostController extends Controller
         $data['slug'] = Str::slug($data['title'],'-');
         $newPost = new Post();
         $newPost->fill($data);
-        $saved = $newPost->save();
+        $newPost->save();
+        $numeroTags = count($data['tags']);
+        dd($numeroTags);
         $newPost->tags()->attach($data['tags']);
-        dd($saved);
+        return redirect()->route('posts.index')->with('status','Hai inserito correttamente il post');
     }
 
     /**
@@ -95,7 +97,12 @@ class PostController extends Controller
         
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'],'-');
-        $post->tags()->sync($data['tags']);
+        if(array_key_exists('tags',$data)){
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->detach();
+
+        }
 
         $post->update($data);
         return redirect()->route('posts.index')->with('status','Hai modificato correttamente il post');
