@@ -23,6 +23,15 @@
             <textarea class="form-control" id="body" name="body" rows="3"
                 placeholder="Testo del post">{{$post->body}}</textarea>
         </div>
+        <div class="btn-group-toggle">
+            @foreach ($tags as $tag)
+            <label class="" for="tag">
+                <input type="checkbox" name="tags[]" value="{{$tag->id}}"
+                    {{($post->tags->contains($tag->id))?'checked':''}}>
+                {{$tag->name}}
+            </label>
+            @endforeach
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 

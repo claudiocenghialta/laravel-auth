@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Post;
+use App\Tag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -31,7 +32,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $tags = Tag::all();
+
+        return view('admin.posts.create', compact('tags'));
     }
 
     /**
@@ -52,6 +55,7 @@ class PostController extends Controller
         $newPost = new Post();
         $newPost->fill($data);
         $saved = $newPost->save();
+        $newPost->tags()->attach($data['tags']);
         dd($saved);
     }
 
@@ -74,7 +78,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.posts.edit',compact('post'));
+        $tags = Tag::all();
+
+        return view('admin.posts.edit',compact('post','tags'));
     }
 
     /**
@@ -89,6 +95,8 @@ class PostController extends Controller
         
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'],'-');
+        $post->tags()->sync($data['tags']);
+
         $post->update($data);
         return redirect()->route('posts.index')->with('status','Hai modificato correttamente il post');
     }
