@@ -15,7 +15,7 @@ class TagsTableSeeder extends Seeder
     {
         for ($i=0; $i < 8; $i++) { 
             $newTag = new Tag();
-            $newTag->name = $faker->word;
+            $newTag->name = $faker->unique()->word;
             $newTag->save();
         }
     }

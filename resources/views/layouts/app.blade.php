@@ -42,8 +42,9 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-success text-white" href="{{route('posts.index')}} ">Posts</a>
+                        <li class="nav-item mr-3">
+                            <a class="nav-link btn btn-success text-white"
+                                href="{{route('guest.post.home')}} ">Posts</a>
                         </li>
                         <!-- Authentication Links -->
                         @guest
@@ -56,6 +57,10 @@
                         </li>
                         @endif
                         @else
+                        <li class="nav-item mr-3">
+                            <a class="nav-link btn btn-warning text-dark" href="{{route('posts.index')}} ">Gestione
+                                Posts</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

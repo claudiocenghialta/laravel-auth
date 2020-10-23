@@ -5,11 +5,13 @@ use App\Http\Controllers\Controller;
 
 use App\Post;
 use App\Tag;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -21,7 +23,7 @@ class PostController extends Controller
     public function index()
     {
         // $posts = Post::all();
-        $posts = Post::where('user_id',Auth::id())->orderBy('created_at','desc')->get();
+        $posts = Post::where('user_id',Auth::id())->orderBy('created_at','desc')->paginate(5);
         return view('admin.posts.index',compact('posts'));
     }
 
@@ -52,12 +54,17 @@ class PostController extends Controller
         $data = $request->all();
         $data['user_id'] = Auth::id();
         $data['slug'] = Str::slug($data['title'],'-');
+        if(!empty($data['img'])){
+            $data['img']=Storage::disk('public')->put( 'Images', $data['img'],);
+        }
         $newPost = new Post();
         $newPost->fill($data);
         $newPost->save();
-        $numeroTags = count($data['tags']);
-        dd($numeroTags);
-        $newPost->tags()->attach($data['tags']);
+        if(array_key_exists('tags',$data)){
+            $newPost->tags()->sync($data['tags']);
+        } else {
+            $newPost->tags()->detach();
+        }
         return redirect()->route('posts.index')->with('status','Hai inserito correttamente il post');
     }
 
@@ -103,7 +110,13 @@ class PostController extends Controller
             $post->tags()->detach();
 
         }
-
+        if(!empty($data['img'])){
+            if (!empty($post->img)) {
+                Storage::disk('public')->delete($post['img']);
+            }
+            Storage::disk('public')->put('Images',$data['img']);
+        }
+        $data['updated_at'] = Carbon::now('Europe/Rome');
         $post->update($data);
         return redirect()->route('posts.index')->with('status','Hai modificato correttamente il post');
     }

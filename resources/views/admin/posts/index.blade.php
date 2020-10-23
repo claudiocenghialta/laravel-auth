@@ -33,7 +33,10 @@
             @endforeach
         </tbody>
     </table>
+    <div class="page-item">{{ $posts->links() }}</div>
     <a href="{{route('posts.create')}} " class="btn btn-warning">New Post</a>
+
+
 </div>
 
 @endsection
