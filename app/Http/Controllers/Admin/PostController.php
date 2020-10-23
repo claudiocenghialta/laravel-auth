@@ -114,7 +114,7 @@ class PostController extends Controller
             if (!empty($post->img)) {
                 Storage::disk('public')->delete($post['img']);
             }
-            Storage::disk('public')->put('Images',$data['img']);
+            $data['img'] = Storage::disk('public')->put('Images',$data['img']);
         }
         $data['updated_at'] = Carbon::now('Europe/Rome');
         $post->update($data);

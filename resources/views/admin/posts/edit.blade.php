@@ -13,7 +13,8 @@
     <form action=" {{route('posts.update', $post->id)}} " method="POST" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
-        <img src="{{Storage::url($post->img)}}" alt="{{$post->title}}">
+        <img class="img-fluid" src="{{(substr($post->img,0,4)=='http') ?($post->img) : (Storage::url($post->img))}}"
+            alt="{{$post->title}}">
         <div class="form-group">
             <label for="img">Scegli un'altra immagine</label>
             <input type="file" class="form-control-file" name="img" accept="image/*">
