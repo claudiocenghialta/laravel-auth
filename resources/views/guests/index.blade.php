@@ -22,6 +22,13 @@
                         <p class="card-text">{{Str::substr($post->body,0,100).'...'}}</p>
                         <a href="{{route('guest.post.show',$post->slug)}} " class="btn btn-primary">Read More...</a>
                     </div>
+                    {{-- @dd($post->tags()) --}}
+                    <div class="card-body">
+                        @forelse ($post->tags as $tag)
+                        <span>{{$tag->name}}</span>
+                        @empty
+                        @endforelse
+                    </div>
                 </div>
 
             </div>
@@ -29,7 +36,6 @@
         </div>
 
     </div>
-
 </div>
 
 @endsection

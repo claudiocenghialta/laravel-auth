@@ -23,7 +23,7 @@ class PostController extends Controller
     public function index()
     {
         if(Auth::user()->role->role=='Admin'){
-            $posts = Post::all();
+            $posts = Post::paginate(5);
         } elseif (Auth::user()->role->role=='Editor') {
             $posts = Post::where('user_id',Auth::id())->orderBy('created_at','desc')->paginate(5);
         }
